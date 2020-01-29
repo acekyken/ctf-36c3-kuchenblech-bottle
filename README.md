@@ -31,6 +31,7 @@ return 'Error'
 
 run(host='0.0.0.0', server="paste", port=8080, reloader=False)
 ```
+Let: 102.102.102.102 = challenge ip
 
 I have to be honest, I don't quite remember the order of our thought process. I do remember that it took us a very long time to figure out. We did learn a lot though about python, http requests and their attribute. I will try to account for all of our ideas, as well as what we tried to find the solution, as well as the solution we eventually found. This is not a straight-forward guide on how to get the flag of this challenge, but an insight into how a process of finding a flag can look like.
 
@@ -68,7 +69,7 @@ Okay, so this means that handing a parameter like name=httpkuchenblech should al
 Well, there is this 
 result = urllib2.urlopen(name).read()
 line and it takes name and wants to url-open it. Hm, maybe it has to be a url?
-We try "<http://.../flag?kuchenblech>"
+We try "<http://102.102.102.102/flag?kuchenblech>"
 because this has to be a valid url, right? Nope, error. 
 We can maybe try things like google.de/?kuchenblech? 
 ha, one of those worked!! yesss. Okay, now we need to construct a url that will display the file. 
@@ -76,4 +77,4 @@ At this point I think we had the epiphany that flag might be a file on the local
 If you ever stored an html file on your local machine and opened it in a browser, you know that the url bar will hold something like file:/* on linux. URL is short for unified resource location, and there are different URI schemes arround. On the web, we often use the http protocol to access files on servers. On our local machine, we can access fles via the file URI scheme https://tools.ietf.org/html/rfc8089
 The second thing that comes to mind is that and exception is raised only if is_remote is true AND not is_valid is true. This means that if is_remote is false, so the request came from localhost, the exception will not be raised, even if is_valid is false. 
 Those 2 last ideas lead to the correct input:
-http://108.61.211.185/isup?name=http%3A%2F%2F127.0.0.1%3A8080%2Fisup%3Fkuchenblech%26name%3Dfile%3A%2F%2F%2Fflag
+http://102.102.102.102/isup?name=http%3A%2F%2F127.0.0.1%3A8080%2Fisup%3Fkuchenblech%26name%3Dfile%3A%2F%2F%2Fflag
