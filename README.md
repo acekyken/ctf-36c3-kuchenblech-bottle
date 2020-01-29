@@ -71,10 +71,10 @@ result = urllib2.urlopen(name).read()
 line and it takes name and wants to url-open it. Hm, maybe it has to be a url?
 We try "<http://102.102.102.102/flag?kuchenblech>"
 because this has to be a valid url, right? Nope, error. 
-We can maybe try things like google.de/?kuchenblech? 
+We can maybe try things like http://www.google.com/?kuchenblech with escaping the special characters.
 ha, one of those worked!! yesss. Okay, now we need to construct a url that will display the file. 
 At this point I think we had the epiphany that flag might be a file on the local file system and that we could provide a url that opens a local file.
-If you ever stored an html file on your local machine and opened it in a browser, you know that the url bar will hold something like file:/* on linux. URL is short for unified resource location, and there are different URI schemes arround. On the web, we often use the http protocol to access files on servers. On our local machine, we can access fles via the file URI scheme https://tools.ietf.org/html/rfc8089
+If you ever stored an html file on your local machine and opened it in a browser, you know that the url bar will hold something like file:/* on linux. URL is short for unified resource location, and there are different URI schemes arround. On the web, we often use the http protocol to access webpages on servers, or use ftp to access files. On our local machine, we can access fles via the file URI scheme https://tools.ietf.org/html/rfc8089
 The second thing that comes to mind is that and exception is raised only if is_remote is true AND not is_valid is true. This means that if is_remote is false, so the request came from localhost, the exception will not be raised, even if is_valid is false. 
 Those 2 last ideas lead to the correct input:
 http://102.102.102.102/isup?name=http%3A%2F%2F127.0.0.1%3A8080%2Fisup%3Fkuchenblech%26name%3Dfile%3A%2F%2F%2Fflag
